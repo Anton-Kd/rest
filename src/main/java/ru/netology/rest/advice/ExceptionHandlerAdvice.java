@@ -24,4 +24,5 @@ public class ExceptionHandlerAdvice {
         System.out.println("[UnauthorizedUser]: " + e.getMessage());
         return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
     }
+
 }

@@ -6,6 +6,7 @@ import ru.netology.rest.Exceptions.InvalidCredentials;
 import ru.netology.rest.Exceptions.UnauthorizedUser;
 import ru.netology.rest.authorities.Authorities;
 import ru.netology.rest.repository.UserRepository;
+import ru.netology.rest.user.UserInput;
 
 import java.util.List;
 
@@ -17,11 +18,13 @@ public class AuthorizationService {
         this.userRepository = userRepository;
     }
 
-    public List<Authorities> getAuthorities(String user, String password) {
-        if (isEmpty(user) || isEmpty(password)) {
+    public List<Authorities> getAuthorities(UserInput user) {
+        String userName = user.getUser();
+        String userPassword = user.getPassword();
+        if (isEmpty(userName) || isEmpty(userPassword)) {
             throw new InvalidCredentials("User name or password is empty");
         }
-        List<Authorities> userAuthorities = userRepository.getUserAuthorities(user, password);
+        List<Authorities> userAuthorities = userRepository.getUserAuthorities(userName, userPassword);
         if (isEmpty(userAuthorities)) {
             throw new UnauthorizedUser("Unknown user " + user);
         }
@@ -35,4 +38,6 @@ public class AuthorizationService {
     private boolean isEmpty(List<?> str) {
         return str == null || str.isEmpty();
     }
+
+
 }
