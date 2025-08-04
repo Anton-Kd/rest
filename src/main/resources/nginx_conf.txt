@@ -1,22 +1,21 @@
-        server {
+ server {
                 listen 80;
                 server_name localhost;
 
 
-         # Обработка запроса на /signin
+        # Обработка запроса на /signin
         location /signin {
-        default_type text/html;  # Установка типа контента
-        return 200 '<html>
-            <body>
-                <h1>Sign in form</h1>
-                <form action="http://localhost:8080/authorize" method="get" target="_blank">
-                    <label for="user">User name:</label>
-                    <input type="text" id="user" name="user"><br><br>
-                    <label for="password">Password:</label>
-                    <input type="text" id="password" name="password"><br><br>
-                    <button type="submit">Submit</button>
-                </form>
-            </body>
-        </html>';
+               alias /mnt/c/Users/fende/IdeaProjects/REST/src/main/resources;
+               index signin.html;
+        # если файл не найден возвращаем 404
+               try_files $uri $uri/ =404;
           }
-      }
+        # Прокси для всех остальных запросов на Spring Boot приложение
+        location / {
+               proxy_pass http://localhost:8080;
+               proxy_set_header Host $host;
+               proxy_set_header X-Real-IP $remote_addr;
+               proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+               proxy_set_header X-Forwarded-Proto $scheme;
+        }
+     }
