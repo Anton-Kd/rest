@@ -20,7 +20,7 @@ public class ExceptionHandlerAdvice {
     // на UnauthorizedUser он должен отсылать обратно клиенту HTTP-статус с кодом 401 и
     // телом в виде сообщения из exception и писать в консоль сообщение из exception.
     @ExceptionHandler(UnauthorizedUser.class)
-    public ResponseEntity<String> UnauthorizedUserHandler(RuntimeException e) {
+    public ResponseEntity<String> UnauthorizedUserHandler(UnauthorizedUser e) {
         System.out.println("[UnauthorizedUser]: " + e.getMessage());
         return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
     }
